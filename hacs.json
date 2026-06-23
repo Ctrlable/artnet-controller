@@ -1,0 +1,7 @@
+{
+  "name": "Ctrlable Art-Net (DMX)",
+  "render_readme": true,
+  "content_in_root": false,
+  "zip_release": true,
+  "filename": "artnet_led.zip"
+}
