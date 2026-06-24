@@ -1,0 +1,120 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add an Art-Net node",
+        "description": "Scan the network or enter a node's address manually.",
+        "menu_options": {
+          "scan": "Scan for nodes (ArtPoll)",
+          "manual": "Enter address manually"
+        }
+      },
+      "manual": {
+        "title": "Add Art-Net node",
+        "data": {
+          "host": "Host (IP address)",
+          "title": "Name (optional)"
+        }
+      },
+      "scan": {
+        "title": "Select a discovered node",
+        "data": {
+          "host": "Node"
+        }
+      },
+      "discovery_confirm": {
+        "title": "Add Art-Net node",
+        "description": "Add the Art-Net node at {host}?"
+      }
+    },
+    "abort": {
+      "already_configured": "This Art-Net node is already configured.",
+      "no_nodes_found": "No new Art-Net nodes were found on the network."
+    },
+    "error": {
+      "cannot_connect": "Could not reach the node.",
+      "overlap": "Two fixtures overlap on the same DMX channels.",
+      "overflow": "A fixture runs past the 512-channel end of its universe.",
+      "invalid_channel": "Channel must be between 1 and 512.",
+      "invalid_channel_size": "Unknown channel size.",
+      "invalid_byte_order": "Unknown byte order.",
+      "invalid_type": "Unknown fixture type.",
+      "invalid_output_correction": "Unknown output correction.",
+      "invalid_universe": "Universe must be an integer.",
+      "invalid_node_type": "Unknown node type.",
+      "invalid_port": "Port must be between 1 and 65535.",
+      "invalid_max_fps": "Max FPS must be between 1 and 50.",
+      "invalid_refresh": "Refresh interval must be 0 or greater.",
+      "missing_name": "Each fixture needs a name."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Art-Net node",
+        "menu_options": {
+          "license": "License key",
+          "node_settings": "Node settings",
+          "add_fixture": "Add a fixture",
+          "remove_fixture": "Remove a fixture"
+        }
+      },
+      "license": {
+        "title": "License key",
+        "description": "Paste the Ctrlable Art-Net license key issued from portal.ctrlable.com. The integration will not start without a valid key.",
+        "data": {
+          "license_key": "License key"
+        }
+      },
+      "node_settings": {
+        "title": "Node settings",
+        "data": {
+          "port": "Port",
+          "node_type": "Node type",
+          "max_fps": "Max FPS",
+          "refresh_every": "Refresh every (seconds)"
+        }
+      },
+      "add_fixture": {
+        "title": "Add a fixture",
+        "data": {
+          "universe": "Universe",
+          "channel": "Start channel",
+          "name": "Name",
+          "type": "Type",
+          "channel_size": "Channel size",
+          "byte_order": "Byte order",
+          "transition": "Default transition (seconds)",
+          "output_correction": "Output correction",
+          "channel_setup": "Channel setup (optional, e.g. rgbw)",
+          "min_temp": "Minimum color temperature",
+          "max_temp": "Maximum color temperature"
+        }
+      },
+      "remove_fixture": {
+        "title": "Remove a fixture",
+        "data": {
+          "fixture": "Fixture"
+        }
+      }
+    },
+    "abort": {
+      "no_fixtures": "There are no fixtures to remove."
+    },
+    "error": {
+      "overlap": "Two fixtures overlap on the same DMX channels.",
+      "overflow": "A fixture runs past the 512-channel end of its universe.",
+      "invalid_channel": "Channel must be between 1 and 512.",
+      "invalid_channel_size": "Unknown channel size.",
+      "invalid_byte_order": "Unknown byte order.",
+      "invalid_type": "Unknown fixture type.",
+      "invalid_output_correction": "Unknown output correction.",
+      "invalid_universe": "Universe must be an integer.",
+      "invalid_node_type": "Unknown node type.",
+      "invalid_port": "Port must be between 1 and 65535.",
+      "invalid_max_fps": "Max FPS must be between 1 and 50.",
+      "invalid_refresh": "Refresh interval must be 0 or greater.",
+      "missing_name": "Each fixture needs a name."
+    }
+  }
+}

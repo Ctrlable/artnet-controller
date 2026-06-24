@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "profiles": [
+    { "manufacturer": "Generic", "model": "Dimmer (1ch)", "type": "dimmer", "channel_size": "8bit" },
+    { "manufacturer": "Generic", "model": "Dimmer 16-bit", "type": "dimmer", "channel_size": "16bit" },
+    { "manufacturer": "Generic", "model": "Relay / Binary", "type": "binary", "channel_size": "8bit" },
+    { "manufacturer": "Generic", "model": "Fixed / Constant", "type": "fixed", "channel_size": "8bit" },
+    { "manufacturer": "Generic", "model": "RGB (3ch)", "type": "rgb", "channel_setup": "rgb" },
+    { "manufacturer": "Generic", "model": "RGB + Dimmer (4ch)", "type": "rgb", "channel_setup": "drgb" },
+    { "manufacturer": "Generic", "model": "RGBW (4ch)", "type": "rgbw", "channel_setup": "rgbw" },
+    { "manufacturer": "Generic", "model": "RGBW + Dimmer (5ch)", "type": "rgbw", "channel_setup": "drgbw" },
+    { "manufacturer": "Generic", "model": "RGBWW / RGB+CCT (5ch)", "type": "rgbww", "channel_setup": "rgbch", "min_temp": "2700K", "max_temp": "6500K" },
+    { "manufacturer": "Generic", "model": "Tunable White / CCT — cool,warm (2ch)", "type": "color_temp", "channel_setup": "ch", "min_temp": "2700K", "max_temp": "6500K", "note": "Ch1 = cool white, Ch2 = warm white. If your fixture is warm-first, use the warm,cool (hc) profile instead." },
+    { "manufacturer": "Generic", "model": "Tunable White / CCT — warm,cool (2ch)", "type": "color_temp", "channel_setup": "hc", "min_temp": "2700K", "max_temp": "6500K", "note": "Ch1 = warm white, Ch2 = cool white." },
+    { "manufacturer": "Generic", "model": "Tunable White + Dimmer (3ch)", "type": "color_temp", "channel_setup": "dch", "min_temp": "2700K", "max_temp": "6500K" },
+    { "manufacturer": "Generic", "model": "Single Color LED Strip", "name": "Warm White Strip", "type": "dimmer", "channel_size": "8bit" },
+    { "manufacturer": "Chauvet", "model": "SlimPAR Pro RGBA — ARC.3 (3ch)", "type": "rgb", "channel_setup": "rgb" },
+    { "manufacturer": "ADJ", "model": "Mega Par Profile — 3ch RGB", "type": "rgb", "channel_setup": "rgb" },
+    { "manufacturer": "ADJ", "model": "Mega Par Profile — 7ch (Dim+RGB)", "type": "rgb", "channel_setup": "drgb" },
+    { "manufacturer": "ENTTEC", "model": "Pixel — RGB (3ch)", "type": "rgb", "channel_setup": "rgb" },
+    { "manufacturer": "ENTTEC", "model": "Pixel — RGBW (4ch)", "type": "rgbw", "channel_setup": "rgbw" },
+
+    { "manufacturer": "WAC Lighting", "model": "Colorscaping — RGBW (4ch)", "type": "rgbw", "channel_setup": "rgbw", "min_temp": "2700K", "max_temp": "6500K", "note": "Colorscaping family RGBW mode. Verify channel order against the fixture's DMX address chart." },
+    { "manufacturer": "WAC Lighting", "model": "Colorscaping — RGB+CCT (5ch)", "type": "rgbww", "channel_setup": "rgbch", "min_temp": "2700K", "max_temp": "6500K", "note": "RGB + cool/warm white. Verify channel order against the fixture's DMX address chart." },
+    { "manufacturer": "WAC Lighting", "model": "Colorscaping — RGBWW 7ch (CTR-WDMX-3CH)", "type": "rgbww", "channel_setup": "drgbch", "min_temp": "2700K", "max_temp": "6500K", "note": "WDMX-3CH RGBWW mode uses 7 channels incl. separate RGB and white dimmers; this 6-slot map approximates it. Confirm exact channel order/dimmers on the WAC DMX chart." },
+    { "manufacturer": "WAC Lighting", "model": "Colorscaping — Tunable White (2ch)", "type": "color_temp", "channel_setup": "ch", "min_temp": "2700K", "max_temp": "6500K", "note": "Cool/warm tunable white. WDMX-3CH TW mode actually exposes 1800K/2700K/5000K + dimmer (4ch) — verify against the WAC DMX chart." },
+    { "manufacturer": "WAC Lighting", "model": "Colorscaping — Dimmer (1ch)", "type": "dimmer", "channel_size": "8bit", "note": "Single-channel intensity." }
+  ]
+}
