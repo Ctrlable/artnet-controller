@@ -1,14 +1,15 @@
 from __future__ import annotations
-_V='dmx_set_failed'
-_U='Node is not running'
-_T='not_sending'
-_S='loaded'
-_R='runtime_data'
-_Q='source'
-_P='fixtures'
-_O='channel'
-_N='name'
-_M='options'
+_W='dmx_set_failed'
+_V='Node is not running'
+_U='not_sending'
+_T='loaded'
+_S='runtime_data'
+_R='source'
+_Q='fixtures'
+_P='channel'
+_O='name'
+_N='options'
+_M='_controller'
 _L='license_key'
 _K='profile'
 _J='profiles'
@@ -53,24 +54,24 @@ def _entry_or_error(hass,connection,msg):
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/list_entries'})
 @callback
-def ws_list_entries(hass,connection,msg):A=[{_D:A.entry_id,_I:A.title,_E:A.data.get(CONF_HOST)}for A in hass.config_entries.async_entries(DOMAIN)if not A.data.get('_controller')];connection.send_result(msg[_A],{'entries':A})
+def ws_list_entries(hass,connection,msg):A=[{_D:A.entry_id,_I:A.title,_E:A.data.get(CONF_HOST)}for A in hass.config_entries.async_entries(DOMAIN)if not A.data.get(_M)];connection.send_result(msg[_A],{'entries':A})
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/get_config',vol.Required(_D):str})
 @callback
 def ws_get_config(hass,connection,msg):
 	B=connection;A=_entry_or_error(hass,B,msg)
 	if A is _B:return
-	B.send_result(msg[_A],{_E:A.data.get(CONF_HOST),_M:dict(A.options)})
+	B.send_result(msg[_A],{_E:A.data.get(CONF_HOST),_N:dict(A.options)})
 @websocket_api.require_admin
-@websocket_api.websocket_command({vol.Required(_C):'artnet_led/save_config',vol.Required(_D):str,vol.Required(_M):dict})
+@websocket_api.websocket_command({vol.Required(_C):'artnet_led/save_config',vol.Required(_D):str,vol.Required(_N):dict})
 @websocket_api.async_response
 async def ws_save_config(hass,connection,msg):
 	B=connection;A=msg;D=_entry_or_error(hass,B,A)
 	if D is _B:return
-	C=A[_M]
+	C=A[_N]
 	try:validate_options(C)
 	except OptionsValidationError as E:B.send_error(A[_A],E.error_key,str(E));return
-	hass.config_entries.async_update_entry(D,options=C);B.send_result(A[_A],{_P:count_fixtures(C)})
+	hass.config_entries.async_update_entry(D,options=C);B.send_result(A[_A],{_Q:count_fixtures(C)})
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/scan'})
 @websocket_api.async_response
@@ -84,15 +85,15 @@ async def ws_create_entry(hass,connection,msg):
 		if F.data.get(CONF_HOST)==E:D.send_result(A[_A],{_D:F.entry_id});return
 	G={CONF_HOST:E}
 	if A.get(_I):G[_I]=A[_I]
-	B=await C.config_entries.flow.async_init(DOMAIN,context={_Q:SOURCE_INTEGRATION_DISCOVERY},data=G)
+	B=await C.config_entries.flow.async_init(DOMAIN,context={_R:SOURCE_INTEGRATION_DISCOVERY},data=G)
 	if B.get(_C)=='form':B=await C.config_entries.flow.async_configure(B['flow_id'],{})
 	if B.get(_C)!='create_entry':D.send_error(A[_A],'create_failed',f"Could not create entry for {E}");return
 	D.send_result(A[_A],{_D:B['result'].entry_id})
-_PROFILE_FIELDS='manufacturer','model',_N,_C,'channel_setup','channel_size','byte_order','output_correction','min_temp','max_temp','note'
+_PROFILE_FIELDS='manufacturer','model',_O,_C,'channel_setup','channel_size','byte_order','output_correction','min_temp','max_temp','note'
 def _clean_profile(raw):
 	B=raw;A={A:B[A]for A in _PROFILE_FIELDS if B.get(A)not in(_B,'')};A[_C]=B.get(_C,'dimmer')
 	if A[_C]not in DEVICE_TYPES:raise OptionsValidationError('invalid_type',f"Unknown type {A[_C]!r}")
-	if not(A.get('model')or A.get(_N)):raise OptionsValidationError('missing_name','Profile needs a model or name')
+	if not(A.get('model')or A.get(_O)):raise OptionsValidationError('missing_name','Profile needs a model or name')
 	return A
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/list_profiles'})
@@ -105,7 +106,7 @@ async def ws_save_profile(hass,connection,msg):
 	D=connection;B=msg
 	try:A=_clean_profile(B[_K])
 	except OptionsValidationError as E:D.send_error(B[_A],E.error_key,str(E));return
-	A[_Q]='user';A[_A]=B[_K].get(_A)or f"user_{uuid4().hex[:10]}";C=await _load_profiles(hass);C=[B for B in C if B.get(_A)!=A[_A]];C.append(A);await _profiles_store(hass).async_save({_J:C});D.send_result(B[_A],{_K:A})
+	A[_R]='user';A[_A]=B[_K].get(_A)or f"user_{uuid4().hex[:10]}";C=await _load_profiles(hass);C=[B for B in C if B.get(_A)!=A[_A]];C.append(A);await _profiles_store(hass).async_save({_J:C});D.send_result(B[_A],{_K:A})
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/delete_profile',vol.Required(_A):str})
 @websocket_api.async_response
@@ -116,7 +117,7 @@ async def ws_delete_profile(hass,connection,msg):A=await _load_profiles(hass);B=
 def ws_node_status(hass,connection,msg):
 	B=connection;A=_entry_or_error(hass,B,msg)
 	if A is _B:return
-	C=getattr(A,_R,_B);B.send_result(msg[_A],{_S:A.state==ConfigEntryState.LOADED,'sending':C is not _B,_E:A.data.get(CONF_HOST)})
+	C=getattr(A,_S,_B);B.send_result(msg[_A],{_T:A.state==ConfigEntryState.LOADED,'sending':C is not _B,_E:A.data.get(CONF_HOST)})
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/test_connection',vol.Required(_D):str})
 @websocket_api.async_response
@@ -134,10 +135,10 @@ def ws_fixtures_state(hass,connection,msg):
 	K='unavailable';J='color_temp_kelvin';I='rgb_color';H='brightness';F=connection;D=msg;C=hass;L=_entry_or_error(C,F,D)
 	if L is _B:return
 	M=er.async_get(C);G=[]
-	for B in er.async_entries_for_config_entry(M,D[_D]):A=C.states.get(B.entity_id);E=A.attributes if A else{};G.append({'entity_id':B.entity_id,'unique_id':B.unique_id,_N:(A.name if A else _B)or B.original_name,'state':A.state if A else K,'available':bool(A)and A.state not in(K,'unknown'),H:E.get(H),I:E.get(I),J:E.get(J)})
-	F.send_result(D[_A],{_P:G})
+	for B in er.async_entries_for_config_entry(M,D[_D]):A=C.states.get(B.entity_id);E=A.attributes if A else{};G.append({'entity_id':B.entity_id,'unique_id':B.unique_id,_O:(A.name if A else _B)or B.original_name,'state':A.state if A else K,'available':bool(A)and A.state not in(K,'unknown'),H:E.get(H),I:E.get(I),J:E.get(J)})
+	F.send_result(D[_A],{_Q:G})
 DMX_SIZE=512
-def _node_of(entry):return getattr(entry,_R,_B)
+def _node_of(entry):return getattr(entry,_S,_B)
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/dmx_values',vol.Required(_D):str,vol.Required(_G):int})
 @callback
@@ -151,14 +152,14 @@ def ws_dmx_values(hass,connection,msg):
 	if len(A)<DMX_SIZE:A+=[0]*(DMX_SIZE-len(A))
 	C.send_result(B[_A],{'values':A})
 @websocket_api.require_admin
-@websocket_api.websocket_command({vol.Required(_C):'artnet_led/dmx_set',vol.Required(_D):str,vol.Required(_G):int,vol.Required(_O):vol.All(int,vol.Range(min=1,max=DMX_SIZE)),vol.Required(_H):vol.All(int,vol.Range(min=0,max=255))})
+@websocket_api.websocket_command({vol.Required(_C):'artnet_led/dmx_set',vol.Required(_D):str,vol.Required(_G):int,vol.Required(_P):vol.All(int,vol.Range(min=1,max=DMX_SIZE)),vol.Required(_H):vol.All(int,vol.Range(min=0,max=255))})
 @websocket_api.async_response
 async def ws_dmx_set(hass,connection,msg):
 	C=connection;A=msg;G=_entry_or_error(hass,C,A)
 	if G is _B:return
 	F=_node_of(G)
-	if F is _B:C.send_error(A[_A],_T,_U);return
-	H=int(A[_G]);D=int(A[_O]);I=int(A[_H])
+	if F is _B:C.send_error(A[_A],_U,_V);return
+	H=int(A[_G]);D=int(A[_P]);I=int(A[_H])
 	try:
 		try:B=F.get_universe(H)
 		except Exception:B=F.add_universe(H)
@@ -171,8 +172,8 @@ async def ws_dmx_set(hass,connection,msg):
 		except Exception:pass
 		J=B.send_data()
 		if asyncio.iscoroutine(J):await J
-	except Exception as K:C.send_error(A[_A],_V,str(K));return
-	C.send_result(A[_A],{'ok':_F,_O:D,_H:I})
+	except Exception as K:C.send_error(A[_A],_W,str(K));return
+	C.send_result(A[_A],{'ok':_F,_P:D,_H:I})
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/dmx_set_all',vol.Required(_D):str,vol.Required(_G):int,vol.Required(_H):vol.All(int,vol.Range(min=0,max=255))})
 @websocket_api.async_response
@@ -180,7 +181,7 @@ async def ws_dmx_set_all(hass,connection,msg):
 	C=connection;A=msg;F=_entry_or_error(hass,C,A)
 	if F is _B:return
 	E=_node_of(F)
-	if E is _B:C.send_error(A[_A],_T,_U);return
+	if E is _B:C.send_error(A[_A],_U,_V);return
 	G=int(A[_G]);H=int(A[_H])&255
 	try:
 		try:B=E.get_universe(G)
@@ -194,25 +195,33 @@ async def ws_dmx_set_all(hass,connection,msg):
 		except Exception:pass
 		I=B.send_data()
 		if asyncio.iscoroutine(I):await I
-	except Exception as K:C.send_error(A[_A],_V,str(K));return
+	except Exception as K:C.send_error(A[_A],_W,str(K));return
 	C.send_result(A[_A],{'ok':_F,_H:H})
 async def _license_status(hass,entry):
-	H='jti';G='valid';E=entry;C=hass;I=await async_get_instance_id(C);D=(E.options.get(_L)or'').strip();B={'instance_id':I,'has_key':bool(D),_S:E.state==ConfigEntryState.LOADED}
+	H='jti';G='valid';E=entry;C=hass;I=await async_get_instance_id(C);D=(E.options.get(_L)or'').strip();B={'instance_id':I,'has_key':bool(D),_T:E.state==ConfigEntryState.LOADED}
 	if not D:return B
 	try:J=await async_get_integration(C,DOMAIN);A=validate_license_offline(D,current_version=str(J.version))
 	except LicenseError as K:B.update({G:False,'error':str(K)});return B
 	F=await load_license_cache(C);B.update({G:_F,H:A.jti,'product':A.product,'expires_at':A.expires_at,'binding':A.binding,'bound_instance':A.instance_id,'max_version':A.max_version,'on_expire':A.on_expire,'last_check':F.get('last_ok')if F.get(H)==A.jti else _B});return B
+def _controller_entry(hass):
+	for A in hass.config_entries.async_entries(DOMAIN):
+		if A.data.get(_M):return A
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/license_status',vol.Required(_D):str})
 @websocket_api.async_response
 async def ws_license_status(hass,connection,msg):
-	A=connection;B=_entry_or_error(hass,A,msg)
-	if B is _B:return
-	A.send_result(msg[_A],await _license_status(hass,B))
+	B=connection;A=hass;C=_controller_entry(A)or _entry_or_error(A,B,msg)
+	if C is _B:return
+	B.send_result(msg[_A],await _license_status(A,C))
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/set_license',vol.Required(_D):str,vol.Required(_L):str})
 @websocket_api.async_response
 async def ws_set_license(hass,connection,msg):
-	D=connection;C=msg;B=hass;A=_entry_or_error(B,D,C)
-	if A is _B:return
-	E={**A.options,_L:C[_L].strip()};B.config_entries.async_update_entry(A,options=E);await B.config_entries.async_reload(A.entry_id);A=B.config_entries.async_get_entry(C[_D]);D.send_result(C[_A],await _license_status(B,A))
+	D=connection;C=msg;A=hass;B=_controller_entry(A)
+	if B is _B:
+		B=_entry_or_error(A,D,C)
+		if B is _B:return
+	F={**B.options,_L:C[_L].strip()};A.config_entries.async_update_entry(B,options=F)
+	for E in A.config_entries.async_entries(DOMAIN):
+		if not E.data.get(_M):await A.config_entries.async_reload(E.entry_id)
+	D.send_result(C[_A],await _license_status(A,B))
