@@ -34,7 +34,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from custom_components.artnet_led.bridge.artnet_controller import ArtNetController
 from custom_components.artnet_led.bridge.channel_bridge import ChannelBridge
 from custom_components.artnet_led.util.channel_switch import validate,to_values,from_values
-from custom_components.artnet_led.const import DOMAIN as INTEGRATION_DOMAIN,DEFAULT_NODE,OPT_NODE,OPT_UNIVERSES,OPT_PORT,OPT_NODE_TYPE,OPT_MAX_FPS,OPT_REFRESH_EVERY,OPT_UNI_SEND_PARTIAL,OPT_UNI_OUTPUT_CORRECTION,OPT_UNI_DEVICES
+from custom_components.artnet_led.const import DOMAIN as INTEGRATION_DOMAIN,PANEL_URL_PATH,DEFAULT_NODE,OPT_NODE,OPT_UNIVERSES,OPT_PORT,OPT_NODE_TYPE,OPT_MAX_FPS,OPT_REFRESH_EVERY,OPT_UNI_SEND_PARTIAL,OPT_UNI_OUTPUT_CORRECTION,OPT_UNI_DEVICES
 from custom_components.artnet_led.models import apply_device_defaults
 ARTNET_DEFAULT_PORT=6454
 SACN_DEFAULT_PORT=5568
@@ -66,7 +66,7 @@ async def async_setup_platform(hass,config,async_add_devices,discovery_info=_A):
 async def async_setup_entry(hass,entry,async_add_entities):
 	A=entry;D=A.data[CONF_NODE_HOST];B={**DEFAULT_NODE,**(A.options or{}).get(OPT_NODE,{})};E={CONF_NODE_HOST:D,CONF_NODE_HOST_OVERRIDE:'',CONF_NODE_PORT:B[OPT_PORT],CONF_NODE_PORT_OVERRIDE:_A,CONF_NODE_TYPE:B[OPT_NODE_TYPE],CONF_NODE_MAX_FPS:B[OPT_MAX_FPS],CONF_NODE_REFRESH:B[OPT_REFRESH_EVERY],CONF_NODE_UNIVERSES:{}}
 	for(F,C)in(A.options or{}).get(OPT_UNIVERSES,{}).items():E[CONF_NODE_UNIVERSES][int(F)]={CONF_SEND_PARTIAL_UNIVERSE:C.get(OPT_UNI_SEND_PARTIAL,_B),CONF_OUTPUT_CORRECTION:C.get(OPT_UNI_OUTPUT_CORRECTION,_F),CONF_DEVICES:[apply_device_defaults(A)for A in C.get(OPT_UNI_DEVICES,[])]}
-	G=DeviceInfo(identifiers={(INTEGRATION_DOMAIN,D)},name=A.title,manufacturer='Ctrlable');await _async_setup_node(hass,E,async_add_entities,device_info=G,entry=A);return _B
+	G=DeviceInfo(identifiers={(INTEGRATION_DOMAIN,D)},name=A.title,manufacturer='Ctrlable',configuration_url=f"homeassistant://{PANEL_URL_PATH}");await _async_setup_node(hass,E,async_add_entities,device_info=G,entry=A);return _B
 async def _async_setup_node(hass,config,async_add_devices,device_info=_A,entry=_A):
 	V=device_info;S=entry;R='server';E=config;pyartnet.base.background_task.CREATE_TASK=asyncio.create_task;I=E.get(CONF_NODE_TYPE);N=E.get(CONF_NODE_MAX_FPS);G=E.get(CONF_NODE_REFRESH);J=E.get(CONF_NODE_HOST);K=E.get(CONF_NODE_PORT);L=E.get(CONF_NODE_HOST_OVERRIDE)
 	if len(L)==0:L=J

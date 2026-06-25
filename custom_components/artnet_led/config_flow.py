@@ -26,6 +26,7 @@ class ArtNetConfigFlow(ConfigFlow,domain=DOMAIN):
 		B=user_input;D={}
 		if B is not _A:C=B[CONF_HOST].strip();await A.async_set_unique_id(C);A._abort_if_unique_id_configured();E=B.get(_C,'').strip()or f"Art-Net {C}";return A.async_create_entry(title=E,data={CONF_HOST:C},options=default_options())
 		F=vol.Schema({vol.Required(CONF_HOST):str,vol.Optional(_C,default=''):str});return A.async_show_form(step_id=_G,data_schema=F,errors=D)
+	async def async_step_controller(A,user_input=_A):await A.async_set_unique_id('controller');A._abort_if_unique_id_configured();return A.async_create_entry(title='Art-Net Controller',data={'_controller':True})
 	async def async_step_scan(A,user_input=_A):
 		C=user_input
 		if C is not _A:B=C[CONF_HOST];E=next((A for A in A._discovered if A[_B]==B),_A);F=(E or{}).get(_C)or f"Art-Net {B}";await A.async_set_unique_id(B);A._abort_if_unique_id_configured();return A.async_create_entry(title=F,data={CONF_HOST:B},options=default_options())

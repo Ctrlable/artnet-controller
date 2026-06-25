@@ -53,7 +53,7 @@ def _entry_or_error(hass,connection,msg):
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/list_entries'})
 @callback
-def ws_list_entries(hass,connection,msg):A=[{_D:A.entry_id,_I:A.title,_E:A.data.get(CONF_HOST)}for A in hass.config_entries.async_entries(DOMAIN)];connection.send_result(msg[_A],{'entries':A})
+def ws_list_entries(hass,connection,msg):A=[{_D:A.entry_id,_I:A.title,_E:A.data.get(CONF_HOST)}for A in hass.config_entries.async_entries(DOMAIN)if not A.data.get('_controller')];connection.send_result(msg[_A],{'entries':A})
 @websocket_api.require_admin
 @websocket_api.websocket_command({vol.Required(_C):'artnet_led/get_config',vol.Required(_D):str})
 @callback
