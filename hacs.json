@@ -1,5 +1,4 @@
 {
-  "name": "Ctrlable Art-Net (DMX)",
-  "render_readme": true,
-  "content_in_root": false
+  "name": "Artnet Controller",
+  "render_readme": true
 }

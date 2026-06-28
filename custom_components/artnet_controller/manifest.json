@@ -1,0 +1,21 @@
+{
+  "domain": "artnet_controller",
+  "name": "Artnet Controller",
+  "codeowners": [
+    "@ctrlable"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "http",
+    "frontend",
+    "websocket_api"
+  ],
+  "documentation": "https://github.com/Ctrlable/artnet-controller",
+  "integration_type": "hub",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/Ctrlable/artnet-controller/issues",
+  "requirements": [
+    "pyartnet==2.0"
+  ],
+  "version": "3.0.0"
+}
